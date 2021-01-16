@@ -116,12 +116,12 @@ ZOOM_SDK_NAMESPACE::IMeetingService *SDKInterfaceWrap::GetMeetingService()
 			_meeting_service->SetEvent(this);
 
 			// NOTE(Wojciech): Bananas
-			// NOTE(Wojciech): In order to trigger this callback correctly, you need call IMeetingConfiguration.EnableLocalRecordingConvertProgressBarDialog(false) before you start a meeting.
+			// NOTE(Wojciech): In order to trigger the onRecording2MP4Done() callback correctly, you need call IMeetingConfiguration.EnableLocalRecordingConvertProgressBarDialog(false) before you start a meeting.
 
 			_meeting_service->GetMeetingConfiguration()
 				->EnableLocalRecordingConvertProgressBarDialog(false);
 
-				GetMeetingParticipantsController();
+			GetMeetingParticipantsController();
 			GetMeetingChatController();
 		}
 	}

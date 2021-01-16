@@ -46,6 +46,51 @@ public:
 	*/
 };
 
+#include <vector>
+#include <map>
+
+using UserId = unsigned int;
+using Time = unsigned __int64;
+
+class SpeakingTime
+{
+public:
+	static SpeakingTime& getInstance()
+	{
+		static SpeakingTime instance;
+		return instance;
+	}
+
+	static Time now()
+	{
+		return 0;
+	}
+
+	Time getSpeakingTime(UserId user_id)
+	{
+		if (this->isCurrentlySpeaking[user_id])
+		{
+			return this->speakingTime[user_id] +
+				(SpeakingTime::now() - this->startedSpeakingTime[user_id]);
+		}
+		else
+		{
+			return this->speakingTime[user_id];
+		}
+	}
+
+	void setSpeakingUsers(const std::vector<UserId>& users)
+	{
+	}
+
+private:
+	SpeakingTime();
+
+	std::map<UserId, bool> isCurrentlySpeaking; // is the user currently speaking
+	std::map<UserId, Time> startedSpeakingTime; // the time user started speaking
+	std::map<UserId, Time> speakingTime; // sum of the speaking time even if silent
+};
+
 class CSDKCustomUIWorkFlow : public ISDKInMeetingServiceMgrEvent
 {
 public:

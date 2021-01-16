@@ -1,13 +1,13 @@
 #include "stdafx.h"
 #include "toolbar_manager.h"
 
-CToolbarMgr& CToolbarMgr::GetInstance()
+CToolbarMgr &CToolbarMgr::GetInstance()
 {
 	static CToolbarMgr instance_;
 	return instance_;
 }
 
-CToolbarMgr::CToolbarMgr():m_ToolbarBottom(NULL)
+CToolbarMgr::CToolbarMgr() : m_ToolbarBottom(NULL)
 {
 	m_hParentWnd = NULL;
 	m_pAppEvent = NULL;
@@ -20,19 +20,19 @@ CToolbarMgr::~CToolbarMgr()
 	UnInit();
 }
 
-void CToolbarMgr::SetEvent(CSDKDemoAppEvent* pAppEvent)
+void CToolbarMgr::SetEvent(CSDKDemoAppEvent *pAppEvent)
 {
 	m_pAppEvent = pAppEvent;
 }
 
 void CToolbarMgr::Init()
 {
-
 }
 
 void CToolbarMgr::UnInit()
 {
-	if (m_ToolbarBottom) {
+	if (m_ToolbarBottom)
+	{
 		if (m_ToolbarBottom->IsWindow())
 			m_ToolbarBottom->DestroyWindow();
 
@@ -43,7 +43,7 @@ void CToolbarMgr::UnInit()
 
 bool CToolbarMgr::SetParentWnd(HWND hParent)
 {
-	if(!IsWindow(hParent))
+	if (!IsWindow(hParent))
 		return false;
 	m_hParentWnd = hParent;
 	GetToolbarBottom();
@@ -56,10 +56,10 @@ HWND CToolbarMgr::GetParentWnd()
 }
 bool CToolbarMgr::IsMeetingServiceReady()
 {
-	if(NULL == m_pMeetingService)
+	if (NULL == m_pMeetingService)
 	{
 		m_pMeetingService = SDKInterfaceWrap::GetInst().GetMeetingService();
-		if(NULL ==m_pMeetingService)
+		if (NULL == m_pMeetingService)
 			return false;
 	}
 	return true;
@@ -67,9 +67,9 @@ bool CToolbarMgr::IsMeetingServiceReady()
 
 bool CToolbarMgr::GetMeetingType()
 {
-	if(NULL != m_pMeetingService)
+	if (NULL != m_pMeetingService)
 	{
-		ZOOM_SDK_NAMESPACE::IMeetingInfo* meetingInfo = m_pMeetingService->GetMeetingInfo();
+		ZOOM_SDK_NAMESPACE::IMeetingInfo *meetingInfo = m_pMeetingService->GetMeetingInfo();
 		m_meetingType = meetingInfo->GetMeetingType();
 		return true;
 	}
@@ -80,22 +80,24 @@ bool CToolbarMgr::GetToolbarBottom()
 {
 	do
 	{
-		if(NULL == m_hParentWnd)
+		if (NULL == m_hParentWnd)
 			break;
-		if(NULL == m_ToolbarBottom || !m_ToolbarBottom->IsWindow())
+		if (NULL == m_ToolbarBottom || !m_ToolbarBottom->IsWindow())
 		{
-			if(NULL == m_ToolbarBottom)
+			if (NULL == m_ToolbarBottom)
 				m_ToolbarBottom = new CToolbarBottom(this);
 
-			if(NULL == m_ToolbarBottom)
+			if (NULL == m_ToolbarBottom)
 				break;
-			
-			if (!m_ToolbarBottom->IsWindow()) {
-				wchar_t* strTitleName = MEETING_BOTTOM_TOOLBAR_TITLE;
+
+			if (!m_ToolbarBottom->IsWindow())
+			{
+				wchar_t *strTitleName = MEETING_BOTTOM_TOOLBAR_TITLE;
 				m_ToolbarBottom->Create(m_hParentWnd, strTitleName, WS_CHILDWINDOW | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, WS_EX_TOPMOST);
 			}
 
-			if (!m_ToolbarBottom->IsWindow()) {
+			if (!m_ToolbarBottom->IsWindow())
+			{
 				break;
 			}
 
@@ -103,12 +105,12 @@ bool CToolbarMgr::GetToolbarBottom()
 				m_ToolbarBottom->SetParent(m_hParentWnd);
 			m_ToolbarBottom->ShowWindow(false);
 			return true;
-		}	
+		}
 		else
 		{
 			return true;
 		}
-	}while(0);
+	} while (0);
 
 	return false;
 }
@@ -116,7 +118,7 @@ bool CToolbarMgr::GetToolbarBottom()
 bool CToolbarMgr::ShowToolbarBottom()
 {
 	ResizeToolbarBottom();
-	if(m_ToolbarBottom)
+	if (m_ToolbarBottom)
 	{
 		m_ToolbarBottom->ShowWindow(true);
 	}
@@ -125,7 +127,7 @@ bool CToolbarMgr::ShowToolbarBottom()
 
 bool CToolbarMgr::HideToolbarBottom()
 {
-	if(m_ToolbarBottom)
+	if (m_ToolbarBottom)
 		m_ToolbarBottom->ShowWindow(false);
 	return true;
 }
@@ -139,7 +141,7 @@ void CToolbarMgr::ResizeToolbarBottom()
 	if (!::IsWindow(hParentWnd))
 		return;
 
-	RECT rcParentClient = { 0 };
+	RECT rcParentClient = {0};
 	::GetClientRect(hParentWnd, &rcParentClient);
 	const int nFitHeight = DEFAULT_TOOLBAR_HEIGHT;
 	//int nFitLeft = rcParentClient.left;
@@ -150,38 +152,38 @@ void CToolbarMgr::ResizeToolbarBottom()
 
 void CToolbarMgr::UpdateButton(ToolbarButtonType btnNeedUpdate, buttonStatusType btnStatus)
 {
-	if(!IsInMeeting(m_pMeetingService->GetMeetingStatus()))
+	if (!IsInMeeting(m_pMeetingService->GetMeetingStatus()))
 		return;
-	
-	if(m_ToolbarBottom)
+
+	if (m_ToolbarBottom)
 		m_ToolbarBottom->UpdateButton(btnNeedUpdate, btnStatus);
 }
 
 void CToolbarMgr::ShowChatWindow()
 {
-	if(m_pAppEvent)
+	if (m_pAppEvent)
 		m_pAppEvent->onShowChatWindow();
 }
 
 void CToolbarMgr::ShowShareWindow()
 {
-	if(m_pAppEvent)
+	if (m_pAppEvent)
 		m_pAppEvent->onShowShareWindow();
 }
 void CToolbarMgr::ShowGalleryViewWindow()
 {
-	if(m_pAppEvent)
+	if (m_pAppEvent)
 		m_pAppEvent->onShowGalleryViewWindow();
 }
 
 void CToolbarMgr::ShowParticipantWindow()
 {
-	if(m_pAppEvent)
+	if (m_pAppEvent)
 		m_pAppEvent->onShowParticipantWindow();
 }
 void CToolbarMgr::EndMeeting()
 {
-	if(m_ToolbarBottom)
+	if (m_ToolbarBottom)
 	{
 		m_ToolbarBottom->EndMeeting();
 	}
@@ -197,25 +199,25 @@ void CToolbarMgr::ShowMoreMenuWindow(int x, int y)
 
 void CToolbarMgr::SetGalleryViewStatus(bool bOn)
 {
-	if(m_ToolbarBottom)
+	if (m_ToolbarBottom)
 		m_ToolbarBottom->SetGalleryViewStatus(bOn);
 }
 
 void CToolbarMgr::SetChatUIStatus(bool bOn)
 {
-	if(m_ToolbarBottom)
+	if (m_ToolbarBottom)
 		m_ToolbarBottom->SetChatUIStatus(bOn);
 }
 
 void CToolbarMgr::SetParticipantUIStatus(bool bOn)
 {
-	if(m_ToolbarBottom)
+	if (m_ToolbarBottom)
 		m_ToolbarBottom->SetParticipantUIStatus(bOn);
 }
 
 void CToolbarMgr::SetShareUIStatus(bool bOn)
 {
-	if(m_ToolbarBottom)
+	if (m_ToolbarBottom)
 		m_ToolbarBottom->SetShareUIStatus(bOn);
 }
 
@@ -223,17 +225,16 @@ bool CToolbarMgr::IsHost()
 {
 	do
 	{
-		if(IsInMeeting(m_pMeetingService->GetMeetingStatus()))
+		if (IsInMeeting(m_pMeetingService->GetMeetingStatus()))
 		{
-			ZOOM_SDK_NAMESPACE::IMeetingParticipantsController* pParticipantCtrl = m_pMeetingService->GetMeetingParticipantsController();
-			if(!pParticipantCtrl)
+			ZOOM_SDK_NAMESPACE::IMeetingParticipantsController *pParticipantCtrl = m_pMeetingService->GetMeetingParticipantsController();
+			if (!pParticipantCtrl)
 				break;
-			ZOOM_SDK_NAMESPACE::IUserInfo* pMe = pParticipantCtrl->GetUserByUserID(0);
-			if(!pMe)
+			ZOOM_SDK_NAMESPACE::IUserInfo *pMe = pParticipantCtrl->GetUserByUserID(0);
+			if (!pMe)
 				break;
 			return pMe->IsHost();
 		}
-	}while(0);
+	} while (0);
 	return false;
 }
-

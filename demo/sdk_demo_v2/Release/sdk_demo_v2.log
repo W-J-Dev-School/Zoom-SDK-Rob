@@ -1,6 +1,5 @@
-﻿  file_transfer.cpp
-C:\Users\Wojciech\Desktop\WJDS\zoom-sdk\demo\sdk_demo_v2\file_transfer.cpp(26,22): warning C4244: 'initializing': conversion from 'std::streamoff' to 'size_t', possible loss of data
-C:\Users\Wojciech\Desktop\WJDS\zoom-sdk\demo\sdk_demo_v2\file_transfer.cpp(38,32): warning C4244: 'initializing': conversion from 'std::streamsize' to 'size_t', possible loss of data
+﻿  toolbar_manager.cpp
+C:\Users\Wojciech\Desktop\WJDS\zoom-sdk\demo\DuiLib\include\Core\UIManager.h(45,2): warning C4091: 'typedef ': ignored on left of 'DuiLib::EVENTTYPE_UI' when no variable is declared
   LINK : /LTCG specified but no code generation required; remove /LTCG from the link command line to improve linker performance
 DuiLib.lib(StdAfx.obj) : warning LNK4099: PDB 'DuiLib_Static.pdb' was not found with 'DuiLib.lib(StdAfx.obj)' or at 'C:\Users\Wojciech\Desktop\WJDS\zoom-sdk\bin\DuiLib_Static.pdb'; linking object as if no debug info
 DuiLib.lib(stb_image.obj) : warning LNK4099: PDB 'DuiLib_Static.pdb' was not found with 'DuiLib.lib(stb_image.obj)' or at 'C:\Users\Wojciech\Desktop\WJDS\zoom-sdk\bin\DuiLib_Static.pdb'; linking object as if no debug info
